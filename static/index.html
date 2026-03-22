@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dad Jokes Generator App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😂</text></svg>">
+</head>
+
+<body class="bg-amber-100 min-h-screen flex items-center justify-center">
+    <div class="bg-stone-200 rounded-2xl shadow-lg p-10 max-w-lg w-full text-center">
+        <h1 class="text-4xl font-bold text-yellow-500 mb-2">😂 Dad Jokes</h1>
+        <p class="text-gray-400 mb-8">Because someone has to tell them.</p>
+
+        <div id="joke-box" class="text-gray-700 text-lg font-medium min-h-[40px] mb-8">
+            Click the button to get a dad joke!
+        </div>
+
+        <button id="joke-btn" onclick="fetchJoke()"
+            class="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-3 px-8 rounded-full transition duration-200">
+            Get a Joke!
+        </button>
+
+        <div class="mt-8 text-center text-stone-1000 text-sm">
+            <p>Made by Zack | V1.0 - 22 March 2026 | Dad Jokes from <a href="https://icanhazdadjoke.com/"
+                    target="_blank"
+                    class="underline hover:text-stone-600 transition duration-200">icanhazdadjoke.com</a></p>
+        </div>
+    </div>
+
+    <script>
+        async function fetchJoke() {
+            const box = document.getElementById("joke-box");
+            box.textContent = "Fetching a joke...";
+
+            try {
+                const response = await fetch("/joke");
+                const data = await response.json();
+                box.textContent = data.joke;
+            } catch (error) {
+                box.textContent = "Oops! Could not fetch a joke. Try again!";
+            }
+        }
+    </script>
+</body>
+
+<!--
+// What's going on:
+
+    Tailwind CSS is loaded via CDN — no install needed
+    joke-box is the div where the joke text appears
+    fetchJoke() is a tiny JS function that calls your Go backend at /joke, gets the JSON back, and displays the joke
+    async/await — the JS waits for the Go server to respond before updating the page
+-->
+
+</html>
